@@ -230,7 +230,7 @@ class Artist extends React.Component {
         <Table hover>
           <tbody>
             {this.state.topTracks.map((topTrack) =>
-              <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.selectTrack(e, topTrack)} title="Open in Spotify">
+              <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.selectTrack(e, topTrack)}>
                 <td>
                   {topTrack.name}
                 </td>
