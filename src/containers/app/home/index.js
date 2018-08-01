@@ -1,9 +1,11 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import ArtistCard from '../../../components/artistCard';
+import ColoredHr from '../../../components/coloredHr';
 import '../../../styles/main.css';
 
 class Home extends React.Component {
@@ -51,31 +53,35 @@ class Home extends React.Component {
     e.preventDefault();
     let searchTerm = this.state.searchTerm;
     this.setState({ artists: [] });
-    this.setState({ searching: true });
 
-    this.getToken().then((token) => {
+    if(searchTerm){
+      this.setState({ searching: true });
 
-      let searchUrl = 'https://api.spotify.com/v1/search';
-      searchUrl += '?q=' + encodeURIComponent(searchTerm);
-      searchUrl += '&type=artist';
+      this.getToken().then((token) => {
 
-      $.get({
-        url: searchUrl,
-        headers: {
-          Authorization: 'Bearer ' + token
-        },
-      }).done((res) => {
-        if(res){
-          this.setState({ artists: res.artists.items });
-        }
-        this.setState({ searching: false });
+        let searchUrl = 'https://api.spotify.com/v1/search';
+        searchUrl += '?q=' + encodeURIComponent(searchTerm);
+        searchUrl += '&type=artist';
+
+        $.get({
+          url: searchUrl,
+          headers: {
+            Authorization: 'Bearer ' + token
+          },
+        }).done((res) => {
+          if(res){
+            this.setState({ artists: res.artists.items });
+          }
+          this.setState({ searching: false });
+        });
       });
-    });
+    }
   }
 
   render(){
     return (
       <Grid>
+
         <Row>
           <Col xs={12}>
             <form onSubmit={this.handleSubmit}>
@@ -89,7 +95,16 @@ class Home extends React.Component {
             </form>
           </Col>
         </Row>
-        <hr/>
+        <Row>
+          <Col xs={12} className="center">
+            <Button onClick={this.handleSubmit} bsStyle="primary" style={{ marginTop: '19px' }}>
+              <Glyphicon glyph="search"/> Search
+            </Button>
+          </Col>
+        </Row>
+
+        <ColoredHr/>
+
         <Row>
           <Col xs={12} className="center">
             {this.state.artists.map((artist) =>
@@ -99,6 +114,7 @@ class Home extends React.Component {
             )}
           </Col>
         </Row>
+
       </Grid>
     );
   }
