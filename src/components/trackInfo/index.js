@@ -4,10 +4,7 @@ import $ from 'jquery';
 import './style.css';
 import '../../styles/main.css';
 import ColoredHr from '../coloredHr';
-import ConvertMillisecondsToFriendly from '../../helpers/convertMillisecondsToFriendly';
-import { Doughnut } from 'react-chartjs-2';
-
-import PlaceholderImage from './placeholder-image.png';
+import { Doughnut, Line } from 'react-chartjs-2';
 
 class ArtistCard extends React.Component {
 
@@ -140,8 +137,59 @@ class ArtistCard extends React.Component {
 
   trackAudioAnalysisWrapper(){
     if(this.state.trackAudioAnalysis){
+
+      let audioAnalysis = this.state.trackAudioAnalysis;
+
+      let loudnessDataset = [];
+      let decimateCount = Math.round(audioAnalysis.segments.length / 100);
+      for(var i = 0; i < audioAnalysis.segments.length; i++){
+        if(i % decimateCount === 0){
+          let segment = audioAnalysis.segments[i];
+          loudnessDataset.push(60 - (segment.loudness_start * -1));
+        }
+      }
+
+      let backgroundColor = '#f2545b';
+
+      let loudnessData = {
+        labels: loudnessDataset,
+        datasets: [{
+          lineTension: 0,
+          backgroundColor: [backgroundColor],
+          data: loudnessDataset
+        }]
+      };
+
+      let options = {
+        maintainAspectRatio: false,
+        hover: {
+          mode: null
+        },
+        elements: {
+          point: {
+            radius: 0
+          }
+        },
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+          yAxes: [{
+            display: false
+          }]
+        },
+        tooltips: {
+          enabled: false
+        }
+      };
+
       return (
-        <div/>
+        <div>
+          <Line data={loudnessData} options={options}/>
+        </div>
       );
     }
     return null;
@@ -235,6 +283,12 @@ class ArtistCard extends React.Component {
         <Row>
           <Col sm={12}>
             {this.trackAudioFeaturesWrapper()}
+          </Col>
+        </Row>
+
+        <Row>
+          <Col sm={12}>
+            {this.trackAudioAnalysisWrapper()}
           </Col>
         </Row>
 
