@@ -1,8 +1,9 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch } from 'react-router-dom';
 import HomePage from '../home';
 import ComponentPage from '../components';
 import ArtistPage from '../artist';
+import NotFoundPage from '../not-found';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -34,9 +35,14 @@ const App = () => (
     </Navbar>
 
     <main>
-      <Route exact path="/" component={HomePage} />
-      <Route exact path="/components" component={ComponentPage} />
-      <Route exact path="/artist" component={ArtistPage} />
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/components" component={ComponentPage} />
+        <Route path="/artist">
+          <Route path="/artist/:id" component={ArtistPage} />
+        </Route>
+        <Route path="*" component={NotFoundPage} />
+      </Switch>
     </main>
   </div>
 );

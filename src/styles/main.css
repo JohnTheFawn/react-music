@@ -17,3 +17,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.accent-color{
+  color: #f2545b;
+}

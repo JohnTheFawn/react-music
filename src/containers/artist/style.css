@@ -1,23 +1,19 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
 
-.artist-card{
-  cursor: pointer;
-  display: inline-block;
-  width: 250px;
-  margin: 8px;
+.artist-container{
+  border-radius: 2px;
+  overflow: hidden;
 }
 
-.artist-card > .artist-image{
-  height: 175px;
+.artist-container > .artist-image{
+  height: 65vh;
   background-size: cover;
   background-position: center;
   border-bottom: 3px solid #f2545b;
 }
 
-.artist-card > .artist-info{
+.artist-container > .artist-info{
   padding: 8px;
-
-  text-align: center;
 
   color: #080808;
 
@@ -26,4 +22,9 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.sub-title{
+  margin-top: 7px;
+  font-size: 24px;
 }

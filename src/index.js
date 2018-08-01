@@ -17,8 +17,6 @@ import './styles/bootstrap-overrides.css';
 
 const target = document.querySelector('#root');
 
-require('dotenv').config()
-
 render(
   <Provider store={store}>
     <ConnectedRouter history={history}>

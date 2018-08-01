@@ -2,5 +2,12 @@
   border-radius: 0px;
 }
 body{
-  background-color: #ececed;
+  background-color: #f3f3f3;
+}
+
+.navbar-inverse
+.navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:focus,
+.navbar-inverse .navbar-nav>.active>a:hover {
+  color: #f2545b;
 }

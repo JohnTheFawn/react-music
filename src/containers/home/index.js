@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import ArtistCard from '../../components/artistCard';
 import '../../styles/main.css';
@@ -93,9 +93,9 @@ class Home extends React.Component {
         <Row>
           <Col xs={12} className="center">
             {this.state.artists.map((artist) =>
-              <LinkContainer to="/artist" key={artist.id}>
+              <Link to={`/artist/${artist.id}`} key={artist.id}>
                 <ArtistCard artist={artist}/>
-              </LinkContainer>
+              </Link>
             )}
           </Col>
         </Row>
