@@ -29,7 +29,7 @@ class AlbumCard extends React.Component {
       }
 
       return(
-        <div className="album-card item-card ellipsis" title={album.name}>
+        <div className="album-card item-card ellipsis" title="Open in Spotify">
           <div className="album-image" style={{ backgroundImage: imageUrl }}>
             <div className="hover-over pointer" style={{ textAlign: 'center' }} onClick={e => this.openSpotify(e, album.external_urls.spotify)}>
               <div style={{ height: '100%', width: '0px', verticalAlign: 'middle', display: 'inline-block' }} />

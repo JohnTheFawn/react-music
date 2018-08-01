@@ -67,7 +67,6 @@ class Artist extends React.Component {
       }).done((res) => {
         if(res){
           this.setState({ artist: res });
-          console.log(res);
 
           this.lookupTopTracks();
           this.lookupAlbums();
@@ -110,6 +109,7 @@ class Artist extends React.Component {
       searchUrl += '/' + artistId;
       searchUrl += '/albums';
       searchUrl += '?limit=50';
+      searchUrl += '&include_groups=album,single';
 
       $.get({
         url: searchUrl,
@@ -123,14 +123,13 @@ class Artist extends React.Component {
           let albums = [];
           for(var i = 0; i < res.items.length; i++){
             let album = res.items[i];
-            if(!alreadyMappedAlbums[album.name] && albums.length < 10){
+            if(!alreadyMappedAlbums[album.name]){
               albums.push(album);
               alreadyMappedAlbums[album.name] = true;
             }
           }
 
           this.setState({ albums: albums });
-          console.log('albums', albums);
         }
       });
     });
@@ -162,7 +161,6 @@ class Artist extends React.Component {
             }
           }
           this.setState({ relatedArtists: relatedArtists });
-          console.log('related artists', relatedArtists);
         }
       });
     });
