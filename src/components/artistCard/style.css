@@ -3,12 +3,12 @@
 .artist-card{
   cursor: pointer;
   display: inline-block;
-  width: 250px;
+  width: 265px;
   margin: 8px;
 }
 
 .artist-card > .artist-image{
-  height: 175px;
+  height: 232px;
   background-size: cover;
   background-position: center;
   border-bottom: 3px solid #f2545b;
