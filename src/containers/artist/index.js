@@ -1,8 +1,11 @@
 import React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Table, Glyphicon} from 'react-bootstrap';
 import $ from 'jquery';
 import '../../styles/main.css';
 import './style.css';
+import CommaSeparatedNumber from '../../components/commaSeparatedNumber';
+import ColoredHr from '../../components/coloredHr';
+import ConvertMillisecondsToFriendly from '../../components/convertMillisecondsToFriendly';
 
 import PlaceholderImage from './placeholder-image.png';
 
@@ -15,6 +18,7 @@ class Artist extends React.Component {
     this.lookupTopTracks = this.lookupTopTracks.bind(this);
     this.lookupAlbums = this.lookupAlbums.bind(this);
     this.lookupRelatedArtists = this.lookupRelatedArtists.bind(this);
+    this.openSpotify = this.openSpotify.bind(this);
 
     this.state = {
       artistId: props.match.params.id,
@@ -167,6 +171,10 @@ class Artist extends React.Component {
     this.lookupArtist();
   }
 
+  openSpotify(e, url){
+    window.open(url);
+  }
+
   render(){
 
     const artist = this.state.artist;
@@ -188,37 +196,51 @@ class Artist extends React.Component {
                   <h1>
                     {artist.name}
                     <span className="pull-right sub-title">
-                      {artist.followers.total} Followers
+                      <CommaSeparatedNumber
+                        value={artist.followers.total}
+                      /> Followers
                     </span>
                   </h1>
 
-                  <hr/>
+                  <ColoredHr/>
 
-                  <h2>
+                  <h3>
                     Top Tracks
-                  </h2>
-                  {this.state.topTracks.map((topTrack) =>
-                    <div key={topTrack.id}>
-                      {topTrack.name}
-                    </div>
-                  )}
+                  </h3>
+                  <Table hover>
+                    <tbody>
+                      {this.state.topTracks.map((topTrack, index) =>
+                        <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.openSpotify(e, topTrack.external_urls.spotify)}>
+                          <td style={{width: 25}}>
+                            <Glyphicon style={{fontSize: 18}} glyph="play-circle" />
+                          </td>
+                          <td>
+                            {topTrack.name}
+                          </td>
+                          <td style={{textAlign: 'right'}}>
+                            <ConvertMillisecondsToFriendly value={topTrack.duration_ms} />
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
 
-                  <hr/>
+                  <ColoredHr/>
 
-                  <h2>
-                    Albums
-                  </h2>
+                  <h3>
+                    Albums ({this.state.albums.length})
+                  </h3>
                   {this.state.albums.map((album) =>
                     <div key={album.id}>
                       {album.name}
                     </div>
                   )}
 
-                  <hr/>
+                  <ColoredHr/>
 
-                  <h2>
+                  <h3>
                     Related Artists
-                  </h2>
+                  </h3>
                   {this.state.relatedArtists.map((relatedArtist) =>
                     <div key={relatedArtist.id}>
                       {relatedArtist.name}

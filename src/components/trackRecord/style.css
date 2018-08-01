@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
+
+.track-card{
+  cursor: pointer;
+  display: inline-block;
+  width: 250px;
+  margin: 8px;
+}
+
+.track-card > .track-image{
+  height: 175px;
+  background-size: cover;
+  background-position: center;
+  border-bottom: 3px solid #f2545b;
+}
+
+.track-card > .track-info{
+  padding: 8px;
+
+  text-align: center;
+
+  color: #080808;
+
+  font-family: 'Raleway', sans-serif;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
