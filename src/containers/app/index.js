@@ -29,7 +29,7 @@ const App = () => (
       </Navbar.Collapse>
     </Navbar>
 
-    <main>
+    <main style={{ marginBottom: '20px' }}>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/artist">
