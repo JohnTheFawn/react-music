@@ -2,13 +2,13 @@ import React from 'react';
 import { Grid, Row, Col, Table, Glyphicon} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
-import '../../styles/main.css';
+import '../../../styles/main.css';
 import './style.css';
-import CommaSeparatedNumber from '../../components/commaSeparatedNumber';
-import ColoredHr from '../../components/coloredHr';
-import ConvertMillisecondsToFriendly from '../../components/convertMillisecondsToFriendly';
-import AlbumCard from '../../components/albumCard';
-import ArtistCard from '../../components/artistCard';
+import CommaSeparatedNumber from '../../../helpers/commaSeparatedNumber';
+import ColoredHr from '../../../components/coloredHr';
+import ConvertMillisecondsToFriendly from '../../../helpers/convertMillisecondsToFriendly';
+import AlbumCard from '../../../components/albumCard';
+import ArtistCard from '../../../components/artistCard';
 
 import PlaceholderImage from './placeholder-image.png';
 

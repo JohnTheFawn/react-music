@@ -3,8 +3,8 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
-import ArtistCard from '../../components/artistCard';
-import '../../styles/main.css';
+import ArtistCard from '../../../components/artistCard';
+import '../../../styles/main.css';
 
 class Home extends React.Component {
   constructor(props, context){

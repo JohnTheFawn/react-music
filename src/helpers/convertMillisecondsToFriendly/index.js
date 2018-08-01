@@ -1,4 +1,4 @@
-const CommaSeparatedNumber = (value) => {
+const ConvertMillisecondsToFriendly = (value) => {
 
   let milliseconds = value.value;
   let seconds = null;
@@ -68,4 +68,4 @@ const CommaSeparatedNumber = (value) => {
   return displayString;
 };
 
-export default CommaSeparatedNumber;
+export default ConvertMillisecondsToFriendly;
