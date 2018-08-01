@@ -1,10 +1,11 @@
 import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
 import HomePage from './home';
 import ArtistPage from './artist';
 import NotFoundPage from './not-found';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
 
 const App = () => (
   <div>
@@ -12,7 +13,7 @@ const App = () => (
       <Navbar.Header>
         <Navbar.Brand>
           <Link to="/">
-            React Music
+            <Glyphicon glyph="headphones"/> React Music
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle />
