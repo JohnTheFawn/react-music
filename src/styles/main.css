@@ -22,9 +22,17 @@
   cursor: pointer;
 }
 
+.underline{
+  text-decoration: underline;
+}
+
 .accent-color{
   color: #f2545b;
 }
 .accent-color-onHover:hover{
+  color: #f2545b;
+}
+
+link{
   color: #f2545b;
 }

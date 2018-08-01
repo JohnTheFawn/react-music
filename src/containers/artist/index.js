@@ -194,7 +194,9 @@ class Artist extends React.Component {
                 </div>
                 <div className="artist-info">
                   <h1>
-                    {artist.name}
+                    <span className="pointer underline accent-color" onClick={e => this.openSpotify(e, artist.external_urls.spotify)} title="Open in Spotify">
+                      {artist.name}
+                    </span>
                     <span className="pull-right sub-title">
                       <CommaSeparatedNumber
                         value={artist.followers.total}
@@ -210,7 +212,7 @@ class Artist extends React.Component {
                   <Table hover>
                     <tbody>
                       {this.state.topTracks.map((topTrack, index) =>
-                        <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.openSpotify(e, topTrack.external_urls.spotify)}>
+                        <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.openSpotify(e, topTrack.external_urls.spotify)} title="Open in Spotify">
                           <td style={{width: 25}}>
                             <Glyphicon style={{fontSize: 18}} glyph="play-circle" />
                           </td>
