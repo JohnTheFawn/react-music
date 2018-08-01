@@ -4,13 +4,14 @@ import '../../styles/main.css';
 
 import PlaceholderImage from './placeholder-image.png';
 
-class ArtistCard extends React.Component {
+class TrackInfo extends React.Component {
 
   constructor(props, context){
     super(props, context);
 
     this.state = {
-      artist: props.artist
+      artist: props.artist,
+      artistInfo: null
     }
   }
 
@@ -34,4 +35,4 @@ class ArtistCard extends React.Component {
   }
 };
 
-export default ArtistCard;
+export default TrackInfo;

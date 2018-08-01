@@ -1,0 +1,19 @@
+.graph-card{
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+
+  margin: 8px 25px;
+}
+
+.graph-card > .graph-wrapper{
+  margin-bottom: 10px;
+}
+
+.graph-card > .graph-card-header{
+  border-bottom: 1px solid #f2545b;
+  padding: 4px 0px;
+  font-size: 20px;
+}

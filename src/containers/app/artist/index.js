@@ -1,15 +1,20 @@
 import React from 'react';
-import { Grid, Row, Col, Table, Glyphicon} from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap';
 import $ from 'jquery';
 import '../../../styles/main.css';
 import './style.css';
 import CommaSeparatedNumber from '../../../helpers/commaSeparatedNumber';
-import ColoredHr from '../../../components/coloredHr';
 import ConvertMillisecondsToFriendly from '../../../helpers/convertMillisecondsToFriendly';
 import AlbumCard from '../../../components/albumCard';
 import ArtistCard from '../../../components/artistCard';
+import ColoredHr from '../../../components/coloredHr';
 import Loader from '../../../components/loader';
+import TrackInfo from '../../../components/trackInfo';
 
 import PlaceholderImage from './placeholder-image.png';
 
@@ -27,6 +32,10 @@ class Artist extends React.Component {
     this.albumsWrapper = this.albumsWrapper.bind(this);
     this.relatedArtistsWrapper = this.relatedArtistsWrapper.bind(this);
 
+    this.trackModalContent = this.trackModalContent.bind(this);
+    this.selectTrack = this.selectTrack.bind(this);
+    this.closeTrackInfoModal = this.closeTrackInfoModal.bind(this);
+
     this.state = {
       artistId: props.match.params.id,
       artist: null,
@@ -38,7 +47,11 @@ class Artist extends React.Component {
       artistLoading: false,
       albumsLoading: false,
       topTracksLoading: false,
-      relatedArtistsLoading: false
+      relatedArtistsLoading: false,
+
+      showTrackInfoModal: false,
+      selectedTrack: null,
+      selectedTrackUrl: null
     };
 
   }
@@ -199,7 +212,9 @@ class Artist extends React.Component {
   }
 
   openSpotify(e, url){
-    window.open(url);
+    if(url){
+      window.open(url);
+    }
   }
 
   topTracksWrapper(){
@@ -215,10 +230,7 @@ class Artist extends React.Component {
         <Table hover>
           <tbody>
             {this.state.topTracks.map((topTrack) =>
-              <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.openSpotify(e, topTrack.external_urls.spotify)} title="Open in Spotify">
-                <td style={{width: 25}}>
-                  <Glyphicon style={{fontSize: 18}} glyph="play-circle" />
-                </td>
+              <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.selectTrack(e, topTrack)} title="Open in Spotify">
                 <td>
                   {topTrack.name}
                 </td>
@@ -231,6 +243,16 @@ class Artist extends React.Component {
         </Table>
       );
     }
+  }
+
+  selectTrack(e, track){
+    this.setState({ selectedTrack: track });
+    this.setState({ selectedTrackUrl: track.external_urls.spotify });
+    this.setState({ showTrackInfoModal: true });
+  }
+
+  closeTrackInfoModal(){
+    this.setState({ showTrackInfoModal: false });
   }
 
   albumsWrapper(){
@@ -269,6 +291,17 @@ class Artist extends React.Component {
     }
   }
 
+  trackModalContent(){
+    if(this.state.selectedTrack){
+      return (
+        <TrackInfo track={this.state.selectedTrack} />
+      )
+    }
+    else{
+      return null;
+    }
+  }
+
   render(){
 
     const artist = this.state.artist;
@@ -280,54 +313,68 @@ class Artist extends React.Component {
       }
 
       return (
-        <Grid>
-          <Row>
-            <Col xs={12}>
-              <div className="artist-container item-card">
-                <div className="artist-image" style={ { backgroundImage: imageUrl}}>
-                </div>
-                <div className="artist-info">
-                  <h1>
-                    <span className="pointer underline accent-color" onClick={e => this.openSpotify(e, artist.external_urls.spotify)} title="Open in Spotify">
-                      {artist.name}
-                    </span>
-                    <span className="pull-right sub-title">
-                      <CommaSeparatedNumber
-                        value={artist.followers.total}
-                      /> Followers
-                    </span>
-                  </h1>
-
-                  <ColoredHr/>
-
-                  <h3>
-                    Top Tracks
-                  </h3>
-                  {this.topTracksWrapper()}
-
-                  <ColoredHr/>
-
-                  <h3>
-                    Albums ({this.state.albums.length})
-                  </h3>
-                  <div className="center" style={{whiteSpace: "initial"}}>
-                    {this.albumsWrapper()}
+        <div>
+          <Grid>
+            <Row>
+              <Col xs={12}>
+                <div className="artist-container item-card">
+                  <div className="artist-image" style={ { backgroundImage: imageUrl}}>
                   </div>
+                  <div className="artist-info">
+                    <h1>
+                      <span className="pointer underline accent-color" onClick={e => this.openSpotify(e, artist.external_urls.spotify)} title="Open in Spotify">
+                        {artist.name}
+                      </span>
+                      <span className="pull-right sub-title">
+                        <CommaSeparatedNumber
+                          value={artist.followers.total}
+                        /> Followers
+                      </span>
+                    </h1>
 
-                  <ColoredHr/>
+                    <ColoredHr/>
 
-                  <h3>
-                    Related Artists
-                  </h3>
-                  <div className="center" style={{whiteSpace: "initial"}}>
-                    {this.relatedArtistsWrapper()}
+                    <h3>
+                      Top Tracks
+                    </h3>
+                    {this.topTracksWrapper()}
+
+                    <ColoredHr/>
+
+                    <h3>
+                      Albums ({this.state.albums.length})
+                    </h3>
+                    <div className="center" style={{whiteSpace: "initial"}}>
+                      {this.albumsWrapper()}
+                    </div>
+
+                    <ColoredHr/>
+
+                    <h3>
+                      Related Artists
+                    </h3>
+                    <div className="center" style={{whiteSpace: "initial"}}>
+                      {this.relatedArtistsWrapper()}
+                    </div>
+
                   </div>
-
                 </div>
-              </div>
-            </Col>
-          </Row>
-        </Grid>
+              </Col>
+            </Row>
+          </Grid>
+
+          <Modal show={this.state.showTrackInfoModal} onHide={this.closeTrackInfoModal} bsSize="large">
+            <Modal.Body>
+              {this.trackModalContent()}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={e => this.openSpotify(e, this.state.selectedTrackUrl)} bsStyle="success">
+                <Glyphicon glyph = "new-window" /> Open in Spotify
+              </Button>
+              <Button onClick={this.closeTrackInfoModal} bsStyle="primary">Close</Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
       );
     }
     return null;

@@ -13,3 +13,7 @@ body{
 .navbar-inverse .navbar-nav>.active>a:hover {
   color: #f2545b;
 }
+
+.modal-footer{
+  border-top: 1px solid #f2545b;
+}

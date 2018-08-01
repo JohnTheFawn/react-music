@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
+
 .center{
   text-align: center;
 }
@@ -35,4 +37,8 @@
 
 link{
   color: #f2545b;
+}
+
+.extra-font{
+  font-family: 'Raleway', sans-serif;
 }
