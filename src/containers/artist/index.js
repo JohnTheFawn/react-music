@@ -6,6 +6,7 @@ import './style.css';
 import CommaSeparatedNumber from '../../components/commaSeparatedNumber';
 import ColoredHr from '../../components/coloredHr';
 import ConvertMillisecondsToFriendly from '../../components/convertMillisecondsToFriendly';
+import AlbumCard from '../../components/albumCard';
 
 import PlaceholderImage from './placeholder-image.png';
 
@@ -232,11 +233,11 @@ class Artist extends React.Component {
                   <h3>
                     Albums ({this.state.albums.length})
                   </h3>
-                  {this.state.albums.map((album) =>
-                    <div key={album.id}>
-                      {album.name}
-                    </div>
-                  )}
+                  <div className="center" style={{whiteSpace: "initial"}}>
+                    {this.state.albums.map((album) =>
+                      <AlbumCard key={album.id} album={album}/>
+                    )}
+                  </div>
 
                   <ColoredHr/>
 
