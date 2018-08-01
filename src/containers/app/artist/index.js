@@ -9,6 +9,7 @@ import ColoredHr from '../../../components/coloredHr';
 import ConvertMillisecondsToFriendly from '../../../helpers/convertMillisecondsToFriendly';
 import AlbumCard from '../../../components/albumCard';
 import ArtistCard from '../../../components/artistCard';
+import Loader from '../../../components/loader';
 
 import PlaceholderImage from './placeholder-image.png';
 
@@ -22,6 +23,9 @@ class Artist extends React.Component {
     this.lookupAlbums = this.lookupAlbums.bind(this);
     this.lookupRelatedArtists = this.lookupRelatedArtists.bind(this);
     this.openSpotify = this.openSpotify.bind(this);
+    this.topTracksWrapper = this.topTracksWrapper.bind(this);
+    this.albumsWrapper = this.albumsWrapper.bind(this);
+    this.relatedArtistsWrapper = this.relatedArtistsWrapper.bind(this);
 
     this.state = {
       artistId: props.match.params.id,
@@ -29,9 +33,18 @@ class Artist extends React.Component {
       albums: [],
       topTracks: [],
       relatedArtists: [],
-      token: null
+      token: null,
+
+      artistLoading: false,
+      albumsLoading: false,
+      topTracksLoading: false,
+      relatedArtistsLoading: false
     };
 
+  }
+
+  componentDidMount(){
+    this.lookupArtist();
   }
 
   getToken(){
@@ -54,7 +67,8 @@ class Artist extends React.Component {
 
   lookupArtist() {
     let artistId = this.state.artistId;
-    this.setState({ searching: true });
+
+    this.setState({ artistLoading: true });
 
     this.getToken().then((token) => {
 
@@ -67,6 +81,8 @@ class Artist extends React.Component {
           Authorization: 'Bearer ' + token
         },
       }).done((res) => {
+        this.setState({ artistLoading: false });
+
         if(res){
           this.setState({ artist: res });
 
@@ -81,6 +97,8 @@ class Artist extends React.Component {
   lookupTopTracks(){
     let artistId = this.state.artistId;
 
+    this.setState({ topTracksLoading: true });
+
     this.getToken().then((token) => {
 
       let searchUrl = 'https://api.spotify.com/v1/artists';
@@ -94,9 +112,11 @@ class Artist extends React.Component {
           Authorization: 'Bearer ' + token
         },
       }).done((res) => {
+
+        this.setState({ topTracksLoading: false });
+
         if(res){
           this.setState({ topTracks: res.tracks });
-          console.log('top tracks', res.tracks);
         }
       });
     });
@@ -104,6 +124,8 @@ class Artist extends React.Component {
 
   lookupAlbums(){
     let artistId = this.state.artistId;
+
+    this.setState({ albumsLoading: true });
 
     this.getToken().then((token) => {
 
@@ -119,6 +141,9 @@ class Artist extends React.Component {
           Authorization: 'Bearer ' + token
         },
       }).done((res) => {
+
+        this.setState({ albumsLoading: false });
+
         if(res){
 
           let alreadyMappedAlbums = {};
@@ -140,6 +165,8 @@ class Artist extends React.Component {
   lookupRelatedArtists(){
     let artistId = this.state.artistId;
 
+    this.setState({ relatedArtistsLoading: true });
+
     this.getToken().then((token) => {
 
       let searchUrl = 'https://api.spotify.com/v1/artists';
@@ -153,6 +180,9 @@ class Artist extends React.Component {
           Authorization: 'Bearer ' + token
         },
       }).done((res) => {
+
+        this.setState({ relatedArtistsLoading: false });
+
         if(res){
           let relatedArtists = [];
           for(var i = 0; i < res.artists.length; i++){
@@ -168,12 +198,75 @@ class Artist extends React.Component {
     });
   }
 
-  componentDidMount(){
-    this.lookupArtist();
-  }
-
   openSpotify(e, url){
     window.open(url);
+  }
+
+  topTracksWrapper(){
+    if(this.state.topTracksLoading){
+      return (
+        <div style={{ paddingTop: '19px' }}>
+          <Loader/>
+        </div>
+      );
+    }
+    else{
+      return (
+        <Table hover>
+          <tbody>
+            {this.state.topTracks.map((topTrack) =>
+              <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.openSpotify(e, topTrack.external_urls.spotify)} title="Open in Spotify">
+                <td style={{width: 25}}>
+                  <Glyphicon style={{fontSize: 18}} glyph="play-circle" />
+                </td>
+                <td>
+                  {topTrack.name}
+                </td>
+                <td style={{textAlign: 'right'}}>
+                  <ConvertMillisecondsToFriendly value={topTrack.duration_ms} />
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      );
+    }
+  }
+
+  albumsWrapper(){
+    if(this.state.albumsLoading){
+      return (
+        <div style={{ paddingTop: '19px' }}>
+          <Loader/>
+        </div>
+      );
+    }
+    else{
+      return (
+        this.state.albums.map((album) =>
+          <AlbumCard key={album.id} album={album}/>
+        )
+      );
+    }
+  }
+
+  relatedArtistsWrapper(){
+    if(this.state.relatedArtistsLoading){
+      return (
+        <div style={{ paddingTop: '19px' }}>
+          <Loader/>
+        </div>
+      );
+    }
+    else{
+      return (
+        this.state.relatedArtists.map((relatedArtist) =>
+          <Link to={`/artist/${relatedArtist.id}`} key={relatedArtist.id}>
+            <ArtistCard artist={relatedArtist}/>
+          </Link>
+        )
+      );
+    }
   }
 
   render(){
@@ -210,23 +303,7 @@ class Artist extends React.Component {
                   <h3>
                     Top Tracks
                   </h3>
-                  <Table hover>
-                    <tbody>
-                      {this.state.topTracks.map((topTrack, index) =>
-                        <tr key={topTrack.id} className="pointer accent-color-onHover" onClick={e => this.openSpotify(e, topTrack.external_urls.spotify)} title="Open in Spotify">
-                          <td style={{width: 25}}>
-                            <Glyphicon style={{fontSize: 18}} glyph="play-circle" />
-                          </td>
-                          <td>
-                            {topTrack.name}
-                          </td>
-                          <td style={{textAlign: 'right'}}>
-                            <ConvertMillisecondsToFriendly value={topTrack.duration_ms} />
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </Table>
+                  {this.topTracksWrapper()}
 
                   <ColoredHr/>
 
@@ -234,9 +311,7 @@ class Artist extends React.Component {
                     Albums ({this.state.albums.length})
                   </h3>
                   <div className="center" style={{whiteSpace: "initial"}}>
-                    {this.state.albums.map((album) =>
-                      <AlbumCard key={album.id} album={album}/>
-                    )}
+                    {this.albumsWrapper()}
                   </div>
 
                   <ColoredHr/>
@@ -245,11 +320,7 @@ class Artist extends React.Component {
                     Related Artists
                   </h3>
                   <div className="center" style={{whiteSpace: "initial"}}>
-                    {this.state.relatedArtists.map((relatedArtist) =>
-                      <Link to={`/artist/${relatedArtist.id}`} key={relatedArtist.id}>
-                        <ArtistCard artist={relatedArtist}/>
-                      </Link>
-                    )}
+                    {this.relatedArtistsWrapper()}
                   </div>
 
                 </div>

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import ArtistCard from '../../../components/artistCard';
 import ColoredHr from '../../../components/coloredHr';
+import Loader from '../../../components/loader';
 import '../../../styles/main.css';
 
 class Home extends React.Component {
@@ -15,6 +16,7 @@ class Home extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getToken = this.getToken.bind(this);
+    this.resultsWrapper = this.resultsWrapper.bind(this);
 
     this.state = {
       searchTerm: '',
@@ -78,6 +80,25 @@ class Home extends React.Component {
     }
   }
 
+  resultsWrapper(){
+    if(this.state.searching){
+      return (
+        <div style={{ paddingTop: '19px' }}>
+          <Loader/>
+        </div>
+      )
+    }
+    else{
+      return(
+        this.state.artists.map((artist) =>
+          <Link to={`/artist/${artist.id}`} key={artist.id}>
+            <ArtistCard artist={artist}/>
+          </Link>
+        )
+      )
+    }
+  }
+
   render(){
     return (
       <Grid>
@@ -107,11 +128,7 @@ class Home extends React.Component {
 
         <Row>
           <Col xs={12} className="center">
-            {this.state.artists.map((artist) =>
-              <Link to={`/artist/${artist.id}`} key={artist.id}>
-                <ArtistCard artist={artist}/>
-              </Link>
-            )}
+            {this.resultsWrapper()}
           </Col>
         </Row>
 
