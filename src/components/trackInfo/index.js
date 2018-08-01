@@ -178,7 +178,8 @@ class ArtistCard extends React.Component {
             display: false
           }],
           yAxes: [{
-            display: false
+            display: false,
+            max: 60
           }]
         },
         tooltips: {
