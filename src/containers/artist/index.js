@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col, Table, Glyphicon} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import '../../styles/main.css';
 import './style.css';
@@ -7,6 +8,7 @@ import CommaSeparatedNumber from '../../components/commaSeparatedNumber';
 import ColoredHr from '../../components/coloredHr';
 import ConvertMillisecondsToFriendly from '../../components/convertMillisecondsToFriendly';
 import AlbumCard from '../../components/albumCard';
+import ArtistCard from '../../components/artistCard';
 
 import PlaceholderImage from './placeholder-image.png';
 
@@ -242,11 +244,13 @@ class Artist extends React.Component {
                   <h3>
                     Related Artists
                   </h3>
-                  {this.state.relatedArtists.map((relatedArtist) =>
-                    <div key={relatedArtist.id}>
-                      {relatedArtist.name}
-                    </div>
-                  )}
+                  <div className="center" style={{whiteSpace: "initial"}}>
+                    {this.state.relatedArtists.map((relatedArtist) =>
+                      <Link to={`/artist/${relatedArtist.id}`} key={relatedArtist.id}>
+                        <ArtistCard artist={relatedArtist}/>
+                      </Link>
+                    )}
+                  </div>
 
                 </div>
               </div>
