@@ -168,11 +168,10 @@ class ArtistCard extends React.Component {
         }]
       };
 
-      let loudness = audioFeatures.loudness * -1;
       let loudnessData = {
         datasets: [{
           backgroundColor: [backgroundColor],
-          data: [(60 - loudness), loudness]
+          data: [-60 + (audioFeatures.loudness * -1), audioFeatures.loudness]
         }]
       };
 
