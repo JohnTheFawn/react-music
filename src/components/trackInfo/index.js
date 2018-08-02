@@ -4,7 +4,8 @@ import $ from 'jquery';
 import './style.css';
 import '../../styles/main.css';
 import ColoredHr from '../coloredHr';
-import { Doughnut, Line } from 'react-chartjs-2';
+import { Doughnut, Bar} from 'react-chartjs-2';
+import TrackPlayer from '../trackPlayer';
 
 class ArtistCard extends React.Component {
 
@@ -149,13 +150,10 @@ class ArtistCard extends React.Component {
         }
       }
 
-      let backgroundColor = '#f2545b';
-
       let loudnessData = {
         labels: loudnessDataset,
         datasets: [{
-          lineTension: 0,
-          backgroundColor: [backgroundColor],
+          backgroundColor: '#f2545b',
           data: loudnessDataset
         }]
       };
@@ -164,11 +162,6 @@ class ArtistCard extends React.Component {
         maintainAspectRatio: false,
         hover: {
           mode: null
-        },
-        elements: {
-          point: {
-            radius: 0
-          }
         },
         legend: {
           display: false
@@ -189,7 +182,7 @@ class ArtistCard extends React.Component {
 
       return (
         <div>
-          <Line data={loudnessData} options={options}/>
+          <Bar data={loudnessData} options={options}/>
         </div>
       );
     }
@@ -280,6 +273,12 @@ class ArtistCard extends React.Component {
         </Row>
 
         <ColoredHr/>
+
+        <Row>
+          <Col sm={12}>
+            <TrackPlayer track={track} />
+          </Col>
+        </Row>
 
         <Row>
           <Col sm={12}>

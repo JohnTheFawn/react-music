@@ -17,6 +17,8 @@ Libraries used
 
 [react-router-bootstrap](https://github.com/react-bootstrap/react-router-bootstrap) - Helps when creating Links with react-bootstrap components
 
+[react-bootstrap-slider](https://github.com/brownieboy/react-bootstrap-slider) - Slider with Bootstrap theme
+
 [Chart.js](https://github.com/chartjs/Chart.js) - Library to create charts and graphs
 
 [react-chartjs-2](https://github.com/jerairrest/react-chartjs-2) - React implementation of Chart.js charts

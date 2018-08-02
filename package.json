@@ -10,6 +10,7 @@
     "jquery": "^3.3.1",
     "react": "^16.4.1",
     "react-bootstrap": "^0.32.1",
+    "react-bootstrap-slider": "^2.1.5",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
