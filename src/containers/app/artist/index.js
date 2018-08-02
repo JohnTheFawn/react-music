@@ -217,6 +217,23 @@ class Artist extends React.Component {
     }
   }
 
+  searchYoutube(e, track){
+    if(track){
+      let youtubeUrl = 'https://www.youtube.com/results?search_query=';
+
+      let artists = '';
+      for(var i = 0; i < track.artists.length; i++){
+        if(i > 0){
+          artists += ' and ';
+        }
+        artists += track.artists[i].name;
+      }
+
+      youtubeUrl += track.name + ' by ' + artists;
+      window.open(youtubeUrl);
+    }
+  }
+
   topTracksWrapper(){
     if(this.state.topTracksLoading){
       return (
@@ -368,6 +385,9 @@ class Artist extends React.Component {
               {this.trackModalContent()}
             </Modal.Body>
             <Modal.Footer>
+              <Button onClick={e => this.searchYoutube(e, this.state.selectedTrack)} bsStyle="danger">
+                <Glyphicon glyph = "new-window" /> Search Youtube
+              </Button>
               <Button onClick={e => this.openSpotify(e, this.state.selectedTrackUrl)} bsStyle="success">
                 <Glyphicon glyph = "new-window" /> Open in Spotify
               </Button>
