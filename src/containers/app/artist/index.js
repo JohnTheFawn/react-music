@@ -19,8 +19,8 @@ import TrackInfo from '../../../components/trackInfo';
 import PlaceholderImage from './placeholder-image.png';
 
 class Artist extends React.Component {
-  constructor(props, context){
-    super(props, context);
+  constructor(props){
+    super(props);
 
     this.getToken = this.getToken.bind(this);
     this.lookupArtist = this.lookupArtist.bind(this);
@@ -37,7 +37,6 @@ class Artist extends React.Component {
     this.closeTrackInfoModal = this.closeTrackInfoModal.bind(this);
 
     this.state = {
-      artistId: props.match.params.id,
       artist: null,
       albums: [],
       topTracks: [],
@@ -54,6 +53,14 @@ class Artist extends React.Component {
       selectedTrackUrl: null
     };
 
+  }
+
+  componentDidUpdate(prevProps){
+    if(this.props.location !== prevProps.location){
+      window.scrollTo(0, 0);
+      this.lookupArtist();
+    }
+    //this.lookupArtist();
   }
 
   componentDidMount(){
@@ -79,7 +86,7 @@ class Artist extends React.Component {
   }
 
   lookupArtist() {
-    let artistId = this.state.artistId;
+    let artistId = this.props.match.params.id;
 
     this.setState({ artistLoading: true });
 
@@ -108,7 +115,7 @@ class Artist extends React.Component {
   }
 
   lookupTopTracks(){
-    let artistId = this.state.artistId;
+    let artistId = this.props.match.params.id;
 
     this.setState({ topTracksLoading: true });
 
@@ -136,7 +143,7 @@ class Artist extends React.Component {
   }
 
   lookupAlbums(){
-    let artistId = this.state.artistId;
+    let artistId = this.props.match.params.id;
 
     this.setState({ albumsLoading: true });
 
@@ -176,7 +183,7 @@ class Artist extends React.Component {
   }
 
   lookupRelatedArtists(){
-    let artistId = this.state.artistId;
+    let artistId = this.props.match.params.id;
 
     this.setState({ relatedArtistsLoading: true });
 
@@ -234,8 +241,64 @@ class Artist extends React.Component {
     }
   }
 
+  selectTrack(e, track){
+    this.setState({ selectedTrack: track });
+    this.setState({ selectedTrackUrl: track.external_urls.spotify });
+    this.setState({ showTrackInfoModal: true });
+  }
+
+  closeTrackInfoModal(){
+    this.setState({ showTrackInfoModal: false });
+  }
+
+  artistImageWrapper(){
+    if(this.state.artistLoading){
+      return null;
+    }
+
+    let imageUrl = 'url(' + PlaceholderImage + ')';
+    if(this.state.artist.images[0]){
+      imageUrl = 'url(' + this.state.artist.images[0].url + ')';
+    }
+
+    return(
+      <div className="artist-image" style={ { backgroundImage: imageUrl}} />
+    );
+  }
+
+  artistWrapper(){
+    if(this.state.artistLoading){
+      return (
+        <div>
+          <h1 className="center">
+            Loading Artist Information...
+          </h1>
+          <div style={{ paddingTop: '19px' }}>
+            <Loader/>
+          </div>
+        </div>
+      );
+    }
+    else{
+      return (
+        <div>
+          <h1>
+            <span className="pointer underline accent-color" onClick={e => this.openSpotify(e, this.state.artist.external_urls.spotify)} title="Open in Spotify">
+              {this.state.artist.name}
+            </span>
+            <span className="pull-right sub-title">
+              <CommaSeparatedNumber
+                value={this.state.artist.followers.total}
+              /> Followers
+            </span>
+          </h1>
+        </div>
+      );
+    }
+  }
+
   topTracksWrapper(){
-    if(this.state.topTracksLoading){
+    if(this.state.artistLoading || this.state.topTracksLoading){
       return (
         <div style={{ paddingTop: '19px' }}>
           <Loader/>
@@ -262,18 +325,8 @@ class Artist extends React.Component {
     }
   }
 
-  selectTrack(e, track){
-    this.setState({ selectedTrack: track });
-    this.setState({ selectedTrackUrl: track.external_urls.spotify });
-    this.setState({ showTrackInfoModal: true });
-  }
-
-  closeTrackInfoModal(){
-    this.setState({ showTrackInfoModal: false });
-  }
-
   albumsWrapper(){
-    if(this.state.albumsLoading){
+    if(this.state.artistLoading || this.state.albumsLoading){
       return (
         <div style={{ paddingTop: '19px' }}>
           <Loader/>
@@ -290,7 +343,7 @@ class Artist extends React.Component {
   }
 
   relatedArtistsWrapper(){
-    if(this.state.relatedArtistsLoading){
+    if(this.state.artistLoading || this.state.relatedArtistsLoading){
       return (
         <div style={{ paddingTop: '19px' }}>
           <Loader/>
@@ -322,12 +375,8 @@ class Artist extends React.Component {
   render(){
 
     const artist = this.state.artist;
-    let imageUrl = 'url(' + PlaceholderImage + ')';
 
     if(artist){
-      if(artist.images[0]){
-        imageUrl = 'url(' + artist.images[0].url + ')';
-      }
 
       return (
         <div>
@@ -335,19 +384,9 @@ class Artist extends React.Component {
             <Row>
               <Col xs={12}>
                 <div className="artist-container item-card">
-                  <div className="artist-image" style={ { backgroundImage: imageUrl}}>
-                  </div>
+                  {this.artistImageWrapper()}
                   <div className="artist-info">
-                    <h1>
-                      <span className="pointer underline accent-color" onClick={e => this.openSpotify(e, artist.external_urls.spotify)} title="Open in Spotify">
-                        {artist.name}
-                      </span>
-                      <span className="pull-right sub-title">
-                        <CommaSeparatedNumber
-                          value={artist.followers.total}
-                        /> Followers
-                      </span>
-                    </h1>
+                    {this.artistWrapper()}
 
                     <ColoredHr/>
 
@@ -359,7 +398,9 @@ class Artist extends React.Component {
                     <ColoredHr/>
 
                     <h3>
-                      Albums ({this.state.albums.length})
+                      Albums {
+                        this.state.artistLoading ? (0) : this.state.albumsLoading ? (0) : this.state.albums.length
+                      }
                     </h3>
                     <div className="center" style={{whiteSpace: "initial"}}>
                       {this.albumsWrapper()}
@@ -381,7 +422,7 @@ class Artist extends React.Component {
           </Grid>
 
           <Modal show={this.state.showTrackInfoModal} onHide={this.closeTrackInfoModal} bsSize="large">
-            <Modal.Body>
+            <Modal.Body style={{ paddingBottom: '0px' }}>
               {this.trackModalContent()}
             </Modal.Body>
             <Modal.Footer>

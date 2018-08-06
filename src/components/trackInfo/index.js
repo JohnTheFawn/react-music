@@ -6,6 +6,7 @@ import '../../styles/main.css';
 import ColoredHr from '../coloredHr';
 import { Doughnut, Bar} from 'react-chartjs-2';
 import TrackPlayer from '../trackPlayer';
+import Loader from '../loader';
 
 class ArtistCard extends React.Component {
 
@@ -186,7 +187,16 @@ class ArtistCard extends React.Component {
         </div>
       );
     }
-    return null;
+    return (
+      <div>
+        <h3 className="center extra-font">
+          Analyzing Track...
+        </h3>
+        <div style={{ paddingTop: '19px' }}>
+          <Loader/>
+        </div>
+      </div>
+    );
   }
 
   trackAudioFeaturesWrapper(){
@@ -266,7 +276,7 @@ class ArtistCard extends React.Component {
       <Grid fluid>
         <Row>
           <Col sm={12}>
-            <h1 className="accent-color extra-font">
+            <h1 className="extra-font">
               {track.name}
             </h1>
           </Col>

@@ -35,9 +35,9 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/artist">
-          <Route path="/artist/:id" component={ArtistPage} />
+          <Route path="/artist/:id" component={ArtistPage} key={this.id} />
         </Route>
-        <Route path="*" component={NotFoundPage} />
+        <Route component={NotFoundPage} />
       </Switch>
     </main>
   </div>
