@@ -40,7 +40,8 @@ class Home extends React.Component {
       }
       else{
         $.get(process.env.REACT_APP_API_URL + '/token')
-        .done((response) => {
+        .done((res) => {
+          var response = JSON.parse(res);
           this.setState({ token: response.token });
           resolve(response.token);
         })

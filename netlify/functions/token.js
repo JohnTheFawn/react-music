@@ -33,6 +33,6 @@ exports.handler = async function(event, context) {
   var token = await getToken();
   return {
     statusCode: 200,
-    body: {token: token}
+    body: JSON.stringify({token: token})
   };
 }
