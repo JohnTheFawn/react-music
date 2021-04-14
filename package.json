@@ -6,6 +6,7 @@
     "bootstrap": "^3.3.7",
     "chart.js": "^2.7.2",
     "connected-react-router": "^4.3.0",
+    "dot-env": "0.0.1",
     "history": "^4.7.2",
     "jquery": "^3.3.1",
     "react": "^16.4.1",
